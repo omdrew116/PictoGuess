@@ -1,28 +1,30 @@
 :root {
-    --bg-color: #f0f0f0;
-    --text-color: #333;
-    --primary-color: #4CAF50;
-    --secondary-color: #2196F3;
-    --accent-color: #FF9800;
-    --success-color: #8BC34A;
-    --error-color: #F44336;
+    --bg-color: #f4f4f4;
+    --text-color: #333333;
+    --primary-color: #2c3e50;
+    --secondary-color: #3498db;
+    --accent-color: #e74c3c;
+    --success-color: #27ae60;
+    --background-light: #ffffff;
+    --background-dark: #f1f1f1;
 }
 
 :root[data-theme='dark'] {
     --bg-color: #121212;
     --text-color: #e0e0e0;
-    --primary-color: #81c784;
-    --secondary-color: #64b5f6;
-    --accent-color: #ffb74d;
-    --success-color: #aed581;
-    --error-color: #e57373;
+    --primary-color: #4a90e2;
+    --secondary-color: #2ecc71;
+    --accent-color: #e67e22;
+    --success-color: #2ecc71;
+    --background-light: #1e1e1e;
+    --background-dark: #2c2c2c;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+    font-family: 'Arial', 'Helvetica', sans-serif;
 }
 
 body {
@@ -33,6 +35,7 @@ body {
     align-items: center;
     min-height: 100vh;
     padding: 20px;
+    line-height: 1.6;
     transition: background-color 0.3s, color 0.3s;
 }
 
@@ -43,7 +46,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,48 +54,100 @@ body {
 }
 
 .start-container {
-    background-color: var(--bg-color);
+    background-color: var(--background-light);
     padding: 30px;
     border-radius: 10px;
     text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
 }
 
-.digit-options {
+.start-container h1 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.digit-selector {
     display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 20px;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
 }
 
-.digit-btn {
+.scroll-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.scroll-btn {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
 }
 
-.digit-btn:hover {
+.scroll-btn:hover {
     background-color: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+#selected-digits {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--primary-color);
+    min-width: 50px;
+    text-align: center;
+}
+
+#start-game-btn {
+    background-color: var(--secondary-color);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+}
+
+#start-game-btn:hover {
+    background-color: var(--primary-color);
+    transform: scale(1.05);
 }
 
 .container {
-    background-color: var(--bg-color);
+    background-color: var(--background-light);
     border-radius: 10px;
-    padding: 20px;
+    padding: 25px;
     width: 100%;
-    max-width: 400px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
 }
 
 header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--bg-color);
+    padding-bottom: 10px;
+}
+
+header h1 {
+    color: var(--primary-color);
+    font-size: 1.5rem;
 }
 
 #theme-toggle {
@@ -100,22 +155,32 @@ header {
     border: none;
     font-size: 24px;
     cursor: pointer;
+    transition: transform 0.2s;
+}
+
+#theme-toggle:hover {
+    transform: scale(1.2);
 }
 
 .game-info {
     display: flex;
     justify-content: space-between;
     margin-bottom: 20px;
+    background-color: var(--background-dark);
+    padding: 10px;
+    border-radius: 6px;
 }
 
 .score-container {
     display: flex;
     gap: 15px;
+    color: var(--text-color);
 }
 
 #status-message {
     text-align: center;
     font-weight: bold;
+    color: var(--secondary-color);
 }
 
 .guess-container {
@@ -134,7 +199,9 @@ header {
     align-items: center;
     font-size: 24px;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
+    background-color: var(--background-dark);
+    color: var(--text-color);
 }
 
 .guess-digit.active {
@@ -144,7 +211,7 @@ header {
 
 .progress-container {
     height: 10px;
-    background-color: #e0e0e0;
+    background-color: var(--background-dark);
     border-radius: 5px;
     overflow: hidden;
     margin-bottom: 20px;
@@ -169,17 +236,19 @@ header {
 }
 
 .num-key {
-    padding: 10px;
+    padding: 12px;
     background-color: var(--primary-color);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
 }
 
 .num-key:hover {
     background-color: var(--secondary-color);
+    transform: scale(1.05);
 }
 
 .control-keys {
@@ -190,40 +259,47 @@ header {
 
 .backspace-key, #submit, #new-game {
     flex-grow: 1;
-    padding: 10px;
+    padding: 12px;
     background-color: var(--accent-color);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
 }
 
 .backspace-key:hover, #submit:hover, #new-game:hover {
     background-color: var(--secondary-color);
+    transform: scale(1.05);
 }
 
 .guesses-list {
     max-height: 200px;
     overflow-y: auto;
+    background-color: var(--background-dark);
+    border-radius: 6px;
+    padding: 10px;
 }
 
 .guess-item {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: var(--background-light);
     margin-bottom: 5px;
     border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .guess-item .correct {
     color: var(--success-color);
+    font-weight: bold;
 }
 
 @media (max-width: 400px) {
     .container {
-        padding: 10px;
+        padding: 15px;
     }
 
     .guess-digit {

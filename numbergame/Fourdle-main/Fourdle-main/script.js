@@ -36,15 +36,38 @@ startScreen.id = 'start-screen';
 startScreen.innerHTML = `
     <div class="start-container">
         <h1>Number Guessing Game</h1>
-        <p>Choose the number of digits to guess:</p>
-        <div class="digit-options">
-            <button class="digit-btn" data-digits="4">4 Digits</button>
-            <button class="digit-btn" data-digits="5">5 Digits</button>
-            <button class="digit-btn" data-digits="6">6 Digits</button>
+        <div class="digit-selector">
+            <label for="digit-count">Number of Digits to Guess:</label>
+            <div class="scroll-selector">
+                <button class="scroll-btn scroll-left">◀</button>
+                <span id="selected-digits">4</span>
+                <button class="scroll-btn scroll-right">▶</button>
+            </div>
         </div>
+        <button id="start-game-btn">Start Game</button>
     </div>
 `;
 document.body.insertBefore(startScreen, document.body.firstChild);
+
+// Digit selector logic
+const selectedDigitsSpan = document.getElementById('selected-digits');
+const scrollLeftBtn = document.querySelector('.scroll-left');
+const scrollRightBtn = document.querySelector('.scroll-right');
+const startGameBtn = document.getElementById('start-game-btn');
+
+let currentDigitCount = 4;
+const MIN_DIGITS = 2;
+const MAX_DIGITS = 6;
+
+scrollLeftBtn.addEventListener('click', () => {
+    currentDigitCount = Math.max(MIN_DIGITS, currentDigitCount - 1);
+    selectedDigitsSpan.textContent = currentDigitCount;
+});
+
+scrollRightBtn.addEventListener('click', () => {
+    currentDigitCount = Math.min(MAX_DIGITS, currentDigitCount + 1);
+    selectedDigitsSpan.textContent = currentDigitCount;
+});
 
 // Game state
 let gameState = {
@@ -68,16 +91,12 @@ const attemptCount = document.getElementById('attempt-count');
 const bestScore = document.getElementById('best-score');
 const statusMessage = document.getElementById('status-message');
 const progressBar = document.getElementById('progress');
-const digitOptionButtons = document.querySelectorAll('.digit-btn');
 
-// Digit selection event listeners
-digitOptionButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const selectedDigits = parseInt(button.dataset.digits);
-        gameState.digitCount = selectedDigits;
-        startScreen.style.display = 'none';
-        initGame();
-    });
+// Start game event listener
+startGameBtn.addEventListener('click', () => {
+    gameState.digitCount = currentDigitCount;
+    startScreen.style.display = 'none';
+    initGame();
 });
 
 // Initialize game
