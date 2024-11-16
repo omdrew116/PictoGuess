@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cyberpunk-background text-cyberpunk-text;
+  }
+}
+
+@layer components {
+  .cyber-button {
+    @apply px-4 py-2 bg-cyberpunk-primary text-white rounded-lg hover:bg-cyberpunk-secondary transition-all duration-300 shadow-neon;
+  }
+
+  .cyber-input {
+    @apply bg-cyberpunk-background border border-cyberpunk-primary text-cyberpunk-text rounded-lg focus:outline-none focus:ring-2 focus:ring-cyberpunk-secondary;
+  }
+}
+
+@layer utilities {
+  .animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+}
