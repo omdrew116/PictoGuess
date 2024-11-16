@@ -9,47 +9,13 @@ let gameState = {
     gameWon: false
 };
 
-// Create start screen
-const startScreen = document.createElement('div');
-startScreen.id = 'start-screen';
-startScreen.innerHTML = `
-    <div class="start-container">
-        <h1>Number Guessing Game</h1>
-        <div class="digit-selector">
-            <label for="digit-count">Number of Digits to Guess:</label>
-            <div class="scroll-selector">
-                <button class="scroll-btn scroll-left">◀</button>
-                <span id="selected-digits">4</span>
-                <button class="scroll-btn scroll-right">▶</button>
-            </div>
-        </div>
-        <button id="start-game-btn">Start Game</button>
-    </div>
-`;
-document.body.insertBefore(startScreen, document.body.firstChild);
-
-// Digit selector logic
+// DOM Elements
+const startScreen = document.getElementById('start-screen');
 const selectedDigitsSpan = document.getElementById('selected-digits');
 const scrollLeftBtn = document.querySelector('.scroll-left');
 const scrollRightBtn = document.querySelector('.scroll-right');
 const startGameBtn = document.getElementById('start-game-btn');
-
-let currentDigitCount = 4;
-const MIN_DIGITS = 2;
-const MAX_DIGITS = 6;
-
-scrollLeftBtn.addEventListener('click', () => {
-    currentDigitCount = Math.max(MIN_DIGITS, currentDigitCount - 1);
-    selectedDigitsSpan.textContent = currentDigitCount;
-});
-
-scrollRightBtn.addEventListener('click', () => {
-    currentDigitCount = Math.min(MAX_DIGITS, currentDigitCount + 1);
-    selectedDigitsSpan.textContent = currentDigitCount;
-});
-
-// DOM Elements
-const guessDigits = Array.from(document.querySelectorAll('.guess-digit'));
+const guessContainer = document.querySelector('.guess-container');
 const numKeys = document.querySelectorAll('.num-key');
 const backspaceKey = document.querySelector('.backspace-key');
 const submitButton = document.getElementById('submit');
@@ -60,10 +26,80 @@ const bestScore = document.getElementById('best-score');
 const statusMessage = document.getElementById('status-message');
 const progressBar = document.getElementById('progress');
 
+// Digit selector logic
+let currentDigitCount = 4;
+const MIN_DIGITS = 2;
+const MAX_DIGITS = 6;
+
+scrollLeftBtn.addEventListener('click', () => {
+    currentDigitCount = Math.max(MIN_DIGITS, currentDigitCount - 1);
+    selectedDigitsSpan.textContent = currentDigitCount;
+    selectedDigitsSpan.classList.add('animate-pulse');
+    setTimeout(() => selectedDigitsSpan.classList.remove('animate-pulse'), 500);
+});
+
+scrollRightBtn.addEventListener('click', () => {
+    currentDigitCount = Math.min(MAX_DIGITS, currentDigitCount + 1);
+    selectedDigitsSpan.textContent = currentDigitCount;
+    selectedDigitsSpan.classList.add('animate-pulse');
+    setTimeout(() => selectedDigitsSpan.classList.remove('animate-pulse'), 500);
+});
+
+// Create congratulations overlay
+const createCongratulationsOverlay = () => {
+    const overlay = document.createElement('div');
+    overlay.id = 'congratulations-overlay';
+    overlay.classList.add(
+        'fixed', 'inset-0', 'z-50', 'flex', 'flex-col', 'items-center', 'justify-center', 
+        'bg-black/80', 'backdrop-blur-sm', 'animate-fade-in'
+    );
+
+    const content = `
+        <div class="text-center space-y-6">
+            <div class="congratulations-text text-6xl font-bold text-cyberpunk-secondary 
+                        animate-pulse-glow drop-shadow-[0_0_20px_rgba(0,255,209,0.7)]">
+                SYSTEM BREACH SUCCESSFUL
+            </div>
+            <div class="text-2xl text-cyberpunk-text animate-slide-up">
+                You cracked the code in <span id="win-attempts" class="text-cyberpunk-secondary"></span> attempts
+            </div>
+            <button id="continue-btn" class="cyber-button mt-6 text-xl animate-bounce">
+                CONTINUE
+            </button>
+        </div>
+
+        <div class="absolute inset-0 pointer-events-none">
+            ${Array(50).fill().map(() => `
+                <div class="absolute cyber-glitch" style="
+                    left: ${Math.random() * 100}%;
+                    top: ${Math.random() * 100}%;
+                    width: ${Math.random() * 10}px;
+                    height: ${Math.random() * 10}px;
+                    background-color: rgba(0, 255, 209, ${Math.random()});
+                    animation: cyber-glitch ${Math.random() * 2 + 1}s infinite;
+                "></div>
+            `).join('')}
+        </div>
+    `;
+
+    overlay.innerHTML = content;
+    document.body.appendChild(overlay);
+
+    // Update attempts
+    document.getElementById('win-attempts').textContent = gameState.attempts;
+
+    // Continue button
+    const continueBtn = document.getElementById('continue-btn');
+    continueBtn.addEventListener('click', () => {
+        overlay.remove();
+        startScreen.classList.remove('hidden');
+    });
+};
+
 // Start game event listener
 startGameBtn.addEventListener('click', () => {
     gameState.digitCount = currentDigitCount;
-    startScreen.style.display = 'none';
+    startScreen.classList.add('hidden');
     initGame();
 });
 
@@ -80,8 +116,8 @@ const initGame = () => {
     updateGuessDisplay();
     updateScoreDisplay();
     updateProgressBar(0);
-    statusMessage.textContent = 'Make your first guess!';
-    submitButton.classList.add('pulse');
+    statusMessage.textContent = 'INITIALIZE SEQUENCE';
+    statusMessage.classList.add('animate-pulse-glow');
     submitButton.disabled = false;
     guessesList.innerHTML = '';
     console.log('Hidden number:', gameState.hiddenNumber.join('')); // For testing
@@ -103,22 +139,21 @@ const generateHiddenNumber = (digitCount) => {
 // Update guess display
 const updateGuessDisplay = () => {
     // Ensure guess digits match the current digit count
-    const currentDigits = document.querySelectorAll('.guess-digit');
+    const currentDigits = guessContainer.querySelectorAll('.guess-digit');
     if (currentDigits.length !== gameState.digitCount) {
-        const guessContainer = document.querySelector('.guess-container');
         guessContainer.innerHTML = ''; // Clear existing digits
         for (let i = 0; i < gameState.digitCount; i++) {
             const digitEl = document.createElement('div');
-            digitEl.classList.add('guess-digit');
+            digitEl.classList.add('guess-digit', 'w-12', 'h-12', 'border', 'border-cyberpunk-primary', 'bg-cyberpunk-background/50', 'flex', 'items-center', 'justify-center', 'text-2xl', 'rounded-lg');
             digitEl.textContent = gameState.currentGuess[i];
             guessContainer.appendChild(digitEl);
         }
     }
 
-    const guessDigits = Array.from(document.querySelectorAll('.guess-digit'));
-    guessDigits.forEach((digit, index) => {
+    const updatedGuessDigits = Array.from(guessContainer.querySelectorAll('.guess-digit'));
+    updatedGuessDigits.forEach((digit, index) => {
         digit.textContent = gameState.currentGuess[index];
-        digit.classList.toggle('active', index === gameState.currentPosition);
+        digit.classList.toggle('bg-cyberpunk-secondary', index === gameState.currentPosition);
     });
 };
 
@@ -156,10 +191,10 @@ const compareNumbers = () => {
 // Add guess to history with animation
 const addGuessToHistory = (guess, correctPositions) => {
     const guessItem = document.createElement('div');
-    guessItem.className = 'guess-item';
+    guessItem.className = 'bg-cyberpunk-background/50 p-2 rounded-lg flex justify-between items-center animate-flicker';
     guessItem.innerHTML = `
-        <span>Guess: ${guess.join('')}</span>
-        <span class="correct">Correct positions: ${correctPositions}</span>
+        <span class="text-cyberpunk-text">Guess: ${guess.join('')}</span>
+        <span class="text-cyberpunk-secondary font-bold">Correct: ${correctPositions}</span>
     `;
     guessesList.insertBefore(guessItem, guessesList.firstChild);
 };
@@ -179,11 +214,13 @@ const updateProgressBar = (correctPositions) => {
 // Update status message
 const updateStatusMessage = (correctPositions) => {
     if (correctPositions === gameState.digitCount) {
-        statusMessage.textContent = '🎉 Congratulations! You won! 🎉';
+        statusMessage.textContent = 'SYSTEM BREACH SUCCESSFUL! 🎉';
+        statusMessage.classList.remove('animate-pulse-glow');
+        statusMessage.classList.add('text-cyberpunk-secondary', 'animate-pulse');
     } else if (correctPositions === 0) {
-        statusMessage.textContent = 'No correct positions. Try again!';
+        statusMessage.textContent = 'NO MATCH. RETRY SEQUENCE.';
     } else {
-        statusMessage.textContent = `${correctPositions} correct! Keep going!`;
+        statusMessage.textContent = `PARTIAL MATCH: ${correctPositions} DIGITS ALIGNED`;
     }
 };
 
@@ -191,7 +228,6 @@ const updateStatusMessage = (correctPositions) => {
 const handleWin = () => {
     gameState.gameWon = true;
     submitButton.disabled = true;
-    submitButton.classList.remove('pulse');
     
     // Update best score
     const currentScore = gameState.attempts;
@@ -200,6 +236,9 @@ const handleWin = () => {
         localStorage.setItem('bestScore', currentScore);
         bestScore.textContent = currentScore;
     }
+
+    // Trigger congratulations overlay
+    createCongratulationsOverlay();
 };
 
 // Submit guess
@@ -208,7 +247,7 @@ const submitGuess = () => {
     
     // Validate input
     if (gameState.currentGuess.includes('_')) {
-        statusMessage.textContent = 'Please fill in all digits!';
+        statusMessage.textContent = 'INCOMPLETE SEQUENCE. FILL ALL DIGITS.';
         return;
     }
 
@@ -239,7 +278,7 @@ numKeys.forEach(key => {
 backspaceKey.addEventListener('click', handleBackspace);
 submitButton.addEventListener('click', submitGuess);
 newGameButton.addEventListener('click', () => {
-    startScreen.style.display = 'flex';
+    startScreen.classList.remove('hidden');
 });
 
 // Handle keyboard input
