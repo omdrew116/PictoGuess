@@ -1,3 +1,5 @@
+/* Tailwind CSS Base, Components, and Utilities */
+
 *, ::before, ::after {
   --tw-border-spacing-x: 0;
   --tw-border-spacing-y: 0;
@@ -106,9 +108,7 @@
   --tw-contain-style:  ;
 }
 
-/*
-! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com
-*/
+/* ! tailwindcss v3.4.15 | MIT License | https://tailwindcss.com */
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -554,13 +554,6 @@ video {
   display: none;
 }
 
-body {
-  --tw-bg-opacity: 1;
-  background-color: rgb(10 17 40 / var(--tw-bg-opacity, 1));
-  --tw-text-opacity: 1;
-  color: rgb(230 230 230 / var(--tw-text-opacity, 1));
-}
-
 .container {
   width: 100%;
 }
@@ -595,6 +588,30 @@ body {
   }
 }
 
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.inset-0 {
+  inset: 0px;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+.mt-6 {
+  margin-top: 1.5rem;
+}
+
 .flex {
   display: flex;
 }
@@ -611,18 +628,20 @@ body {
   width: 3rem;
 }
 
-@keyframes flicker {
-  0% {
-    opacity: 0.9;
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8,0,1,1);
   }
 
-  100% {
-    opacity: 1;
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0,0,0.2,1);
   }
 }
 
-.animate-flicker {
-  animation: flicker 0.1s infinite alternate;
+.animate-bounce {
+  animation: bounce 1s infinite;
 }
 
 @keyframes pulse {
@@ -649,6 +668,26 @@ body {
   animation: pulse-glow 2s infinite;
 }
 
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.7s ease-out;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
 .items-center {
   align-items: center;
 }
@@ -659,6 +698,18 @@ body {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-y-6 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
 
 .rounded-lg {
@@ -674,6 +725,15 @@ body {
   border-color: rgb(23 104 172 / var(--tw-border-opacity, 1));
 }
 
+.bg-black\/80 {
+  background-color: rgb(0 0 0 / 0.8);
+}
+
+.bg-cyberpunk-background {
+  --tw-bg-opacity: 1;
+  background-color: rgb(10 17 40 / var(--tw-bg-opacity, 1));
+}
+
 .bg-cyberpunk-background\/50 {
   background-color: rgb(10 17 40 / 0.5);
 }
@@ -687,9 +747,28 @@ body {
   padding: 0.5rem;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+.text-6xl {
+  font-size: 3.75rem;
+  line-height: 1;
+}
+
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .font-bold {
@@ -706,9 +785,53 @@ body {
   color: rgb(230 230 230 / var(--tw-text-opacity, 1));
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s infinite;
+.drop-shadow-\[0_0_20px_rgba\(0\2c 255\2c 209\2c 0\.7\)\] {
+  --tw-drop-shadow: drop-shadow(0 0 20px rgba(0,255,209,0.7));
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
+
+.backdrop-blur-sm {
+  --tw-backdrop-blur: blur(4px);
+  -webkit-backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+  backdrop-filter: var(--tw-backdrop-blur) var(--tw-backdrop-brightness) var(--tw-backdrop-contrast) var(--tw-backdrop-grayscale) var(--tw-backdrop-hue-rotate) var(--tw-backdrop-invert) var(--tw-backdrop-opacity) var(--tw-backdrop-saturate) var(--tw-backdrop-sepia);
+}
+
+/* Cyberpunk Theme Variables */
+
+:root {
+  --cyberpunk-background: #0A1128;
+  --cyberpunk-text: #E6E6E6;
+  --cyberpunk-primary: #1768AC;
+  --cyberpunk-secondary: #00FFD1;
+}
+
+/* Base Styles */
+
+body {
+  background-color: var(--cyberpunk-background);
+  color: var(--cyberpunk-text);
+}
+
+/* Tailwind Component Styles */
+
+.cyber-button {
+  border-radius: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+  background-color: var(--cyberpunk-primary);
+  color: white;
+}
+
+.cyber-button:hover {
+  background-color: var(--cyberpunk-secondary);
+}
+
+/* Keyframe Animations */
 
 @keyframes pulse-glow {
   0%, 100% {
@@ -718,4 +841,48 @@ body {
   50% {
     opacity: 0.7;
   }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cyber-glitch {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+
+  25% {
+    transform: translate(-2px, 2px) scale(1.02);
+  }
+
+  50% {
+    transform: translate(2px, -2px) scale(0.98);
+  }
+
+  75% {
+    transform: translate(-1px, 1px) scale(1.01);
+  }
+}
+
+/* Utility Classes */
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.7s ease-out;
+}
+
+.cyber-glitch {
+  animation: cyber-glitch 2s infinite;
 }

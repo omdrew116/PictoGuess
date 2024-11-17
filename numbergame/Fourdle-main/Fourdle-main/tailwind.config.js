@@ -9,35 +9,39 @@ module.exports = {
       colors: {
         cyberpunk: {
           background: '#0A1128',
-          primary: '#1768AC',
-          secondary: '#00FFD1',
-          accent: '#5D3FD3',
           text: '#E6E6E6',
-          highlight: '#00FFFF'
+          primary: '#1768AC',
+          secondary: '#00FFD1'
         }
-      },
-      fontFamily: {
-        'cyber': ['Orbitron', 'sans-serif']
-      },
-      boxShadow: {
-        'neon': '0 0 10px rgba(0, 255, 209, 0.5), 0 0 20px rgba(0, 255, 209, 0.3)',
-        'cyber-glow': '0 0 15px rgba(87, 63, 211, 0.6)'
       },
       animation: {
         'pulse-glow': 'pulse-glow 2s infinite',
-        'flicker': 'flicker 0.1s infinite alternate'
+        'slide-up': 'slide-up 0.7s ease-out',
+        'cyber-glitch': 'cyber-glitch 2s infinite'
       },
       keyframes: {
         'pulse-glow': {
           '0%, 100%': { opacity: 1 },
           '50%': { opacity: 0.7 }
         },
-        'flicker': {
-          '0%': { opacity: 0.9 },
-          '100%': { opacity: 1 }
+        'slide-up': {
+          'from': { 
+            opacity: 0, 
+            transform: 'translateY(20px)' 
+          },
+          'to': { 
+            opacity: 1, 
+            transform: 'translateY(0)' 
+          }
+        },
+        'cyber-glitch': {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '25%': { transform: 'translate(-2px, 2px) scale(1.02)' },
+          '50%': { transform: 'translate(2px, -2px) scale(0.98)' },
+          '75%': { transform: 'translate(-1px, 1px) scale(1.01)' }
         }
       }
-    },
+    }
   },
-  plugins: [],
-}
+  plugins: []
+};

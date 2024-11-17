@@ -8,12 +8,16 @@
     "watch:css": "tailwindcss -i ./input.css -o ./output.css --watch",
     "start": "npm run build:css && open index.html"
   },
-  "keywords": ["game", "cyberpunk", "number-guessing"],
+  "keywords": [
+    "game",
+    "cyberpunk",
+    "number-guessing"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "tailwindcss": "^3.3.2"
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.15"
   }
 }

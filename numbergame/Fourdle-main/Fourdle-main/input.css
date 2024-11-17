@@ -1,30 +1,66 @@
+/* Tailwind CSS Base, Components, and Utilities */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply bg-cyberpunk-background text-cyberpunk-text;
-  }
+/* Cyberpunk Theme Variables */
+:root {
+    --cyberpunk-background: #0A1128;
+    --cyberpunk-text: #E6E6E6;
+    --cyberpunk-primary: #1768AC;
+    --cyberpunk-secondary: #00FFD1;
 }
 
-@layer components {
-  .cyber-button {
-    @apply px-4 py-2 bg-cyberpunk-primary text-white rounded-lg hover:bg-cyberpunk-secondary transition-all duration-300 shadow-neon;
-  }
-
-  .cyber-input {
-    @apply bg-cyberpunk-background border border-cyberpunk-primary text-cyberpunk-text rounded-lg focus:outline-none focus:ring-2 focus:ring-cyberpunk-secondary;
-  }
+/* Base Styles */
+body {
+    background-color: var(--cyberpunk-background);
+    color: var(--cyberpunk-text);
 }
 
-@layer utilities {
-  .animate-pulse-glow {
-    animation: pulse-glow 2s infinite;
-  }
+/* Tailwind Component Styles */
+.cyber-button {
+    @apply px-4 py-2 rounded-lg transition-all duration-300;
+    background-color: var(--cyberpunk-primary);
+    color: white;
+}
 
-  @keyframes pulse-glow {
+.cyber-button:hover {
+    background-color: var(--cyberpunk-secondary);
+}
+
+/* Keyframe Animations */
+@keyframes pulse-glow {
     0%, 100% { opacity: 1; }
     50% { opacity: 0.7; }
-  }
+}
+
+@keyframes slide-up {
+    from { 
+        opacity: 0; 
+        transform: translateY(20px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+@keyframes cyber-glitch {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(-2px, 2px) scale(1.02); }
+    50% { transform: translate(2px, -2px) scale(0.98); }
+    75% { transform: translate(-1px, 1px) scale(1.01); }
+}
+
+/* Utility Classes */
+.animate-pulse-glow {
+    animation: pulse-glow 2s infinite;
+}
+
+.animate-slide-up {
+    animation: slide-up 0.7s ease-out;
+}
+
+.cyber-glitch {
+    animation: cyber-glitch 2s infinite;
 }
